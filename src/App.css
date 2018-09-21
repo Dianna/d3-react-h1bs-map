@@ -1,28 +1,32 @@
-.App {
-  text-align: center;
+button {
+  margin-right: 0.5em;
+  margin-bottom: 0.3em !important;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.row {
+  margin-top: 1em;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.mean text {
+  font: 11px sans-serif;
+  fill: grey;
 }
 
-.App-title {
-  font-size: 1.5em;
+.mean path {
+  stroke-dasharray: 3;
+  stroke: grey;
+  stroke-width: 1px;
 }
 
-.App-intro {
-  font-size: large;
+/***********************************/
+/*            Histogram            */
+/***********************************/
+.histogram .bar rect {
+  fill: steelblue;
+  shape-rendering: crispEdges;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.histogram .bar text {
+  fill: #fff;
+  font: 12px sans-serif;
 }
