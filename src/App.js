@@ -7,7 +7,7 @@ import "./App.css";
 import Preloader from "./components/Preloader";
 import CountyMap from "./components/CountyMap";
 import Histogram from "./components/Histogram";
-import { Title, Description } from "./components/Meta";
+import { Title, Description, GraphDescription } from "./components/Meta";
 import { loadAllData } from "./DataHandling";
 
 class App extends Component {
@@ -62,12 +62,19 @@ class App extends Component {
     return (
       <div className="App container">
         <Title data={filteredSalaries} filteredBy={this.state.filteredBy} />
+
         <Description
           data={filteredSalaries}
           allData={this.state.techSalaries}
           medianIncomesByCounty={this.state.medianIncomesByCounty}
           filteredBy={this.state.filteredBy}
         />
+
+        <GraphDescription
+          data={filteredSalaries}
+          filteredBy={this.state.filteredBy}
+        />
+
         <svg width="1100" height="500">
           <CountyMap
             usTopoJson={this.state.usTopoJson}
