@@ -3,12 +3,12 @@ import * as d3 from "d3";
 import _ from "lodash";
 
 import "./App.css";
-
+import { loadAllData } from "./DataHandling";
 import Preloader from "./components/Preloader";
 import CountyMap from "./components/CountyMap";
 import Histogram from "./components/Histogram";
 import { Title, Description, GraphDescription } from "./components/Meta";
-import { loadAllData } from "./DataHandling";
+import MedianLine from "./components/MedianLine";
 
 class App extends Component {
   state = {
@@ -51,6 +51,7 @@ class App extends Component {
       return <Preloader />;
     }
 
+    // Returns: only counties that have data, grouped by county
     const filteredSalaries = this.state.techSalaries,
       filteredSalariesMap = _.groupBy(filteredSalaries, "countyID"),
       countyValues = this.state.countyNames
@@ -58,6 +59,9 @@ class App extends Component {
         .filter(d => !_.isNull(d));
 
     let zoom = null;
+
+    const medianHousehold = this.state.medianIncomesByUSState["US"][0]
+      .medianIncome;
 
     return (
       <div className="App container">
@@ -86,6 +90,7 @@ class App extends Component {
             height={500}
             zoom={zoom}
           />
+
           <Histogram
             bins={10}
             width={500}
@@ -95,6 +100,17 @@ class App extends Component {
             data={filteredSalaries}
             axisMargin={83}
             bottomMargin={5}
+            value={d => d.base_salary}
+          />
+
+          <MedianLine
+            data={filteredSalaries}
+            x={500}
+            y={10}
+            width={600}
+            height={500}
+            bottomMargin={5}
+            median={medianHousehold}
             value={d => d.base_salary}
           />
         </svg>
