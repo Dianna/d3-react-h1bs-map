@@ -4,8 +4,7 @@ import { scaleLinear } from "d3-scale";
 import {
   mean as d3mean,
   extent as d3extent,
-  deviation as d3deviation,
-  max as d3max
+  deviation as d3deviation
 } from "d3-array";
 import _ from "lodash";
 import S from "string";
