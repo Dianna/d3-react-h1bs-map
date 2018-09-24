@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { scaleLinear } from "d3-scale";
 import {
   mean as d3mean,
@@ -11,7 +12,45 @@ import S from "string";
 
 import USStatesMap from "./USStatesMap";
 
-class Description extends Component {
+const dataShape = PropTypes.arrayOf(
+  PropTypes.shape({
+    USstate: PropTypes.string,
+    base_salary: PropTypes.number,
+    case_status: PropTypes.string,
+    city: PropTypes.string,
+    clean_job_title: PropTypes.string,
+    county: PropTypes.string,
+    countyID: PropTypes.string,
+    employer: PropTypes.string,
+    job_title: PropTypes.string,
+    start_date: PropTypes.object,
+    submit_date: PropTypes.object
+  })
+);
+
+export default class Description extends Component {
+  static propTypes = {
+    data: dataShape.isRequired,
+    allData: dataShape.isRequired,
+    medianIncomesByCounty: PropTypes.objectOf(
+      PropTypes.arrayOf(
+        PropTypes.shape({
+          USstate: PropTypes.string,
+          countyID: PropTypes.number,
+          countyName: PropTypes.string,
+          lowerBound: PropTypes.number,
+          medianIncome: PropTypes.number,
+          upperBound: PropTypes.number
+        })
+      )
+    ).isRequired,
+    filteredBy: PropTypes.shape({
+      USstate: PropTypes.string,
+      year: PropTypes.string,
+      jobTitle: PropTypes.string
+    }).isRequired
+  };
+
   allDataForYear(year, data = this.props.allData) {
     return data.filter(d => d.submit_date.getFullYear() === year);
   }
@@ -166,4 +205,3 @@ class Description extends Component {
     );
   }
 }
-export default Description;

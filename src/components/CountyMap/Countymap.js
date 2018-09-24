@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import * as d3 from "d3";
 import * as topojson from "topojson";
 import _ from "lodash";
@@ -7,7 +8,43 @@ import _ from "lodash";
 import County from "./County";
 
 // We need three D3 objects to build a choropleth map: a geographical projection, a path generator, and a quantize scale for colors.
-class CountyMap extends Component {
+export default class CountyMap extends Component {
+  static propTypes = {
+    usTopoJson: PropTypes.shape({
+      arcs: PropTypes.arrayOf(
+        PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
+      ),
+      objects: PropTypes.shape({
+        counties: PropTypes.object,
+        land: PropTypes.object,
+        states: PropTypes.object
+      }),
+      transform: PropTypes.shape({
+        scale: PropTypes.arrayOf(PropTypes.number),
+        translate: PropTypes.arrayOf(PropTypes.number)
+      }),
+      type: PropTypes.string
+    }).isRequired,
+    USstateNames: PropTypes.arrayOf(
+      PropTypes.shape({
+        code: PropTypes.string,
+        id: PropTypes.number,
+        name: PropTypes.string
+      })
+    ).isRequired,
+    values: PropTypes.arrayOf(
+      PropTypes.shape({
+        countyID: PropTypes.number,
+        value: PropTypes.number
+      })
+    ).isRequired,
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+    zoom: PropTypes.string
+  };
+
   constructor(props) {
     super(props);
 
@@ -98,5 +135,3 @@ class CountyMap extends Component {
     }
   }
 }
-
-export default CountyMap;

@@ -1,6 +1,15 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-const HistogramBar = ({ percent, x, y, width, height }) => {
+HistogramBar.propTypes = {
+  percent: PropTypes.number.isRequired,
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired
+};
+
+function HistogramBar({ percent, x, y, width, height }) {
   let translate = `translate(${x}, ${y})`,
     label = percent.toFixed(0) + "%";
 
@@ -24,6 +33,6 @@ const HistogramBar = ({ percent, x, y, width, height }) => {
       </text>
     </g>
   );
-};
+}
 
 export default HistogramBar;

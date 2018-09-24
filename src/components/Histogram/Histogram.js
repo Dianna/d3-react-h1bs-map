@@ -1,10 +1,37 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import * as d3 from "d3";
 import HistogramBar from "./HistogramBar";
 import Axis from "./Axis";
 
 // We're using the "full-feature integration" strategy here
-class Histogram extends Component {
+export default class Histogram extends Component {
+  static propTypes = {
+    bins: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+    x: PropTypes.string.isRequired,
+    y: PropTypes.string.isRequired,
+    data: PropTypes.arrayOf(
+      PropTypes.shape({
+        USstate: PropTypes.string,
+        base_salary: PropTypes.number,
+        case_status: PropTypes.string,
+        city: PropTypes.string,
+        clean_job_title: PropTypes.string,
+        county: PropTypes.string,
+        countyID: PropTypes.string,
+        employer: PropTypes.string,
+        job_title: PropTypes.string,
+        start_date: PropTypes.object,
+        submit_date: PropTypes.object
+      })
+    ).isRequired,
+    axisMargin: PropTypes.number.isRequired,
+    bottomMargin: PropTypes.number.isRequired,
+    value: PropTypes.func.isRequired
+  };
+
   constructor(props) {
     super();
     // `.histogram()` takes a dataset and returns a histogram-shaped dataset: An array of arrays. Top level are bins and meta data. Children are "values in this bin"
@@ -70,5 +97,3 @@ class Histogram extends Component {
     );
   }
 }
-
-export default Histogram;

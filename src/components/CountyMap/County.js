@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import _ from "lodash";
 
 const ChoroplethColors = _.reverse([
@@ -16,7 +17,20 @@ const ChoroplethColors = _.reverse([
 const BlankColor = "rgb(240,240,240)"; // a pleasant gray ;)
 
 // We're using the "full-feature integration" strategy here
-class County extends Component {
+export default class County extends Component {
+  static propTypes = {
+    geoPath: PropTypes.func.isRequired,
+    feature: PropTypes.shape({
+      geometry: PropTypes.object,
+      id: PropTypes.number,
+      properties: PropTypes.object,
+      type: PropTypes.string
+    }).isRequired,
+    zoom: PropTypes.string,
+    quantize: PropTypes.func.isRequired,
+    value: PropTypes.number
+  };
+
   /* CountyMap passes complex props - quantize, geoPath, and feature - which are pass-by-reference instead of pass-by-value. That means React can't see when they produce different values, just when they are different instances.
 
   This can lead to all 3,220 counties re-rendering every time a user does anything. But they only have to re-render if we change the map zoom or if the county gets a new value. */
@@ -28,7 +42,6 @@ class County extends Component {
 
   render() {
     const { value, geoPath, feature, quantize } = this.props;
-
     let color = BlankColor;
 
     if (value) {
@@ -40,5 +53,3 @@ class County extends Component {
     );
   }
 }
-
-export default County;
