@@ -53,7 +53,7 @@ export const loadAllData = (callback = _.noop) => {
     // TODO: I CHANGED THIS
     .defer(d3.csv, "data/us-county-names-normalized.csv", cleanCountyNames)
     .defer(d3.csv, "data/county-median-incomes.csv", cleanIncomes)
-    .defer(d3.csv, "data/h1bs-2012-2016-shortened.csv", cleanSalary)
+    .defer(d3.csv, "data/h1bs-2012-2016.csv", cleanSalary)
     .defer(d3.tsv, "data/us-state-names.tsv", cleanUSStateName)
     // We define 5 tasks to run with `.defer` then wait for them to finish with `.await`
     .await(
