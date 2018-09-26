@@ -20,7 +20,7 @@ export default class GraphDescription extends Component {
     ).isRequired,
     filteredBy: PropTypes.shape({
       USstate: PropTypes.string,
-      year: PropTypes.string,
+      year: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       jobTitle: PropTypes.string
     }).isRequired
   };

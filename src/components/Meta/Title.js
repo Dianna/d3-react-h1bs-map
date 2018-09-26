@@ -24,7 +24,7 @@ export default class Title extends Component {
     ).isRequired,
     filteredBy: PropTypes.shape({
       USstate: PropTypes.string,
-      year: PropTypes.string,
+      year: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       jobTitle: PropTypes.string
     }).isRequired
   };
@@ -32,7 +32,7 @@ export default class Title extends Component {
   get yearsFragment() {
     const year = this.props.filteredBy.year;
 
-    return year === "*" ? "" : `in ${year}`;
+    return year === "*" ? "" : ` in ${year}`;
   }
 
   get USstateFragment() {
