@@ -51,10 +51,9 @@ export default class ControlRow extends Component {
   makePick(picked, newState) {
     let toggleValues = this.state.toggleValues;
     // Re-map selected toggles (complete remap so React sees change, necessary?)
-    toggleValues = _.mapValues(
-      toggleValues,
-      (value, key) => newState && key == picked
-    );
+    toggleValues = _.mapValues(toggleValues, (value, key) => {
+      return newState && key === picked.toString();
+    });
 
     // if newState is false, we want to reset (2nd param upstream) (user "unselected" toggle)
     this.props.updateDataFilter(picked, !newState);
