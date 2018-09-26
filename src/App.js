@@ -7,6 +7,7 @@ import { loadAllData } from "./DataHandling";
 import Preloader from "./components/Preloader";
 import CountyMap from "./components/CountyMap";
 import Histogram from "./components/Histogram";
+import Controls from "./components/Controls";
 import { Title, Description, GraphDescription } from "./components/Meta";
 import MedianLine from "./components/MedianLine";
 
@@ -15,6 +16,7 @@ class App extends Component {
     techSalaries: [],
     countyNames: [],
     medianIncomes: [],
+    salariesFilter: () => true,
     filteredBy: {
       USstate: "*",
       year: "*",
@@ -27,7 +29,7 @@ class App extends Component {
 
     We'll tie it to component mount when using the basic architecture, and in a more render agnostic place when using Redux or MobX for state management.*/
 
-    loadAllData(data => this.setState(data));
+    loadAllData(data => this.setState(() => ({ ...data })));
   }
 
   countyValue(county, techSalariesMap) {
@@ -46,22 +48,39 @@ class App extends Component {
     };
   }
 
+  // Will be called by Controls downstream
+  updateDataFilter(salariesFilter, filteredBy) {
+    this.setState(() => ({
+      salariesFilter,
+      filteredBy
+    }));
+  }
+
   render() {
     if (this.state.techSalaries.length < 1) {
       return <Preloader />;
     }
 
     // Returns: only counties that have data, grouped by county
-    const filteredSalaries = this.state.techSalaries,
+    const filteredSalaries = this.state.techSalaries.filter(
+        this.state.salariesFilter // state default returns all salaries
+      ),
       filteredSalariesMap = _.groupBy(filteredSalaries, "countyID"),
       countyValues = this.state.countyNames
         .map(county => this.countyValue(county, filteredSalariesMap))
         .filter(d => !_.isNull(d));
 
-    let zoom = null;
+    let zoom = null,
+      medianHousehold = this.state.medianIncomesByUSState["US"][0].medianIncome;
 
-    const medianHousehold = this.state.medianIncomesByUSState["US"][0]
-      .medianIncome;
+    if (this.state.filteredBy.USstate !== "*") {
+      zoom = this.state.filteredBy.USstate;
+
+      medianHousehold = d3.mean(
+        this.state.medianIncomesByUSState[zoom],
+        d => d.medianIncome
+      );
+    }
 
     return (
       <div className="App container">
@@ -91,6 +110,14 @@ class App extends Component {
             zoom={zoom}
           />
 
+          <rect
+            x="500"
+            y="0"
+            width="600"
+            height="500"
+            style={{ fill: "white" }}
+          />
+
           <Histogram
             bins={10}
             width={500}
@@ -114,6 +141,11 @@ class App extends Component {
             value={d => d.base_salary}
           />
         </svg>
+
+        <Controls
+          data={this.state.techSalaries}
+          updateDataFilter={this.updateDataFilter.bind(this)}
+        />
       </div>
     );
   }
