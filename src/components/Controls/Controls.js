@@ -38,7 +38,31 @@ export default class Controls extends Component {
     return !_.isEqual(this.state, nextState);
   }
 
+  // Toggle URL specified controls
+  componentDidMount() {
+    let [year, USstate, jobTitle] = window.location.hash
+      .replace("#", "")
+      .split("-");
+
+    if (year !== "*" && year) {
+      this.updateYearFilter(Number(year));
+    }
+    if (USstate !== "*" && USstate) {
+      this.updateUSstateFilter(USstate);
+    }
+    if (jobTitle !== "*" && jobTitle) {
+      this.updateJobTitleFilter(jobTitle);
+    }
+  }
+
   componentDidUpdate() {
+    // Update URL with user selections
+    window.location.hash = [
+      this.state.year || "*",
+      this.state.USstate || "*",
+      this.state.jobTitle || "*"
+    ].join("-");
+
     this.reportUpdateUpTheChain();
   }
 
