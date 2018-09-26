@@ -32,6 +32,20 @@ class App extends Component {
     loadAllData(data => this.setState(() => ({ ...data })));
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const { techSalaries, filteredBy } = this.state;
+
+    const changedSalaries =
+      (techSalaries && techSalaries.length) !==
+      (nextState.techSalaries && nextState.techSalaries.length);
+
+    const changedFilters = Object.keys(filteredBy).some(
+      k => filteredBy[k] !== nextState.filteredBy[k]
+    );
+
+    return changedSalaries || changedFilters;
+  }
+
   countyValue(county, techSalariesMap) {
     const medianHousehold = this.state.medianIncomes[county.id],
       salaries = techSalariesMap[county.name];
